@@ -17,6 +17,11 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# Node 20 ランタイム廃止に向け、公式推奨で JS アクションを Node 24 で実行する
+# https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 permissions:
   contents: read
   pages: write
@@ -34,7 +39,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '22'
           cache: npm
@@ -50,7 +55,7 @@ jobs:
           VITE_BASE_PATH: /-Post-lecture-survey/
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: dist
 
