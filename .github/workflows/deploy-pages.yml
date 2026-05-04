@@ -1,6 +1,14 @@
 # GitHub Pages（GitHub Actions ソース）へ Vite の dist をデプロイする
-# 事前: Settings → Secrets and variables → Actions に VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY を登録
-# 事前: Settings → Pages → Build and deployment の Source を「GitHub Actions」にする
+#
+# 【必須・404 対策】初回および設定変更時:
+#   https://github.com/stachiba0517/-Post-lecture-survey/settings/pages
+#   → Build and deployment → Source を「GitHub Actions」にする
+#   （Deploy from a branch のままだと deploy が 404 になる）
+#
+# Secrets: Settings → Secrets and variables → Actions
+#   VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY
+#
+# 初回デプロイで「github-pages 環境の承認」を求められたら Actions 画面で承認する
 
 name: Deploy to GitHub Pages
 
@@ -23,10 +31,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '22'
           cache: npm
@@ -39,11 +47,10 @@ jobs:
         env:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-          # Project Pages: https://stachiba0517.github.io/-Post-lecture-survey/
           VITE_BASE_PATH: /-Post-lecture-survey/
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: dist
 
